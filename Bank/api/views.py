@@ -21,7 +21,7 @@ def autocomplete_branch(request):
         q = request.query_params['q']
         limit = int(request.query_params['limit'])
         offset = int(request.query_params['offset'])
-        branches = BranchInfo.objects.all().filter(branch__contains=q).order_by('ifsc')[offset:offset + limit]
+        branches = BranchInfo.objects.all().filter(branch__icontains=q).order_by('ifsc')[offset:offset + limit]
         serializer = BranchSerializer(branches, many=True)
         return Response(serializer.data)
 
@@ -32,8 +32,8 @@ def allpossible_branch(request):
         limit = int(request.query_params['limit'])
         offset = int(request.query_params['offset'])
         branches = BranchInfo.objects.all().filter(
-            Q(ifsc__contains=q) | Q(bank_id__contains=q) | Q(branch__contains=q) | Q(address__contains=q) |
-            Q(city__contains=q) | Q(district__contains=q) | Q(state__contains=q) | Q(bank_name__contains=q)
+            Q(ifsc__icontains=q) | Q(bank_id__icontains=q) | Q(branch__icontains=q) | Q(address__icontains=q) |
+            Q(city__icontains=q) | Q(district__icontains=q) | Q(state__icontains=q) | Q(bank_name__icontains=q)
         ).order_by('ifsc')[offset:offset + limit]
         serializer = BranchSerializer(branches, many=True)
         return Response(serializer.data)
